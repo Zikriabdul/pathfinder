@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PathFinder - RIASEC</title>
+    <link rel="icon" type="image/png" href="logo pathfinder.jpeg">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+
+        <div class="navbar-top">
+
+            <div class="logo">PATHFINDER</div>
+
+            <div class="menu">
+               <a href="#" onclick="bukaTentang()">Tentang Kami</a>
+                <a href="#" onclick="bukaPrivasi()">Privasi & Keamanan Data</a>
+            </div>
+            <div style="display:flex; align-items:center; gap:12px;">
+            <div class="logo-univ">
+            <img src="logo pathfinder.jpeg" alt="logo" id="logo">
+        </div>
+
+
+        </div>
+
+    </nav>
+
+    <section class="hero">
+        <h1>Temukan Arah Kariermu Mulai dari Dirimu Sendiri</h1>
+        <p>
+            Kenali minat dan kepribadianmu melalui tes berbasis RIASEC
+            untuk membantu menentukan pilihan karier yang lebih tepat.
+        </p>
+        <button class="start-btn" onclick="mulaiTes()">
+            Mulai
+        </button>
+
+    </section>
+
+    <section id="tesSection" class="tes-section" style="display:none;">
+        <div class="hasil-container">
+            <h2>Pilihlah Jawaban sesuai kepribadian anda</h2>
+            <input
+                type="text"
+                id="nama"
+                placeholder="Masukkan Nama Lengkap"
+                class="input-box"
+            >
+            <div id="progress">
+                Soal <span id="nomorSoal">1</span> dari <span id="totalSoal">30</span>
+            </div>
+
+            <h3 id="pertanyaan">
+                Pertanyaan akan muncul di sini
+            </h3>
+            <select id="jawaban" class="input-box">
+
+                <option value="" selected disabled>
+                    Pilih jawaban
+                </option>
+
+                <option value="1">
+                    Sangat Tidak Sesuai
+                </option>
+
+                <option value="2">
+                    Tidak Sesuai
+                </option>
+
+                <option value="3">
+                    Sesuai
+                </option>
+
+                <option value="4">
+                    Sangat Sesuai
+                </option>
+
+            </select>
+
+            <button
+                id="btnNext"
+                onclick="kirimData()"
+                class="start-btn"
+            >
+                Tes Selanjutnya
+            </button>
+            <button
+        onclick="kembaliHome()"
+        class="back-btn"
+    >
+        ← Kembali
+    </button>
+            <p id="status"></p>
+
+        </div>
+
+    </section>
+<div id="tentangModal" class="modal">
+
+    <div class="modal-content">
+
+        <span class="close" onclick="tutupTentang()">
+            &times;
+        </span>
+
+        <h2>Tentang PathFinder</h2>
+
+        <p>
+            PathFinder merupakan platform pemetaan karier berbasis
+            teori RIASEC (Holland Code) yang membantu pengguna
+            mengenali minat, potensi, dan lingkungan kerja yang
+            sesuai dengan karakteristik dirinya.
+        </p>
+
+        <h3>🎯 Tujuan</h3>
+
+        <p>
+            Membantu siswa, mahasiswa, dan pencari kerja
+            mengambil keputusan karier secara lebih terarah
+            berdasarkan data dan hasil asesmen minat.
+        </p>
+
+        <h3>🧠 Metode yang Digunakan</h3>
+
+        <p>
+            PathFinder menggunakan teori RIASEC yang terdiri dari:
+        </p>
+
+        <ul>
+            <li>Realistic (R)</li>
+            <li>Investigative (I)</li>
+            <li>Artistic (A)</li>
+            <li>Social (S)</li>
+            <li>Enterprising (E)</li>
+            <li>Conventional (C)</li>
+        </ul>
+
+        <h3>🚀 Manfaat</h3>
+
+        <ul>
+            <li>Mengetahui kecenderungan minat karier</li>
+            <li>Memahami kekuatan dan area pengembangan diri</li>
+            <li>Mendapat rekomendasi lingkungan kerja ideal</li>
+            <li>Memperoleh rekomendasi profesi yang relevan</li>
+        </ul>
+
+        <h3>👨‍💻 Pengembang</h3>
+        <p>
+            Dikembangkan oleh Tim Pathfinder terdiri dari Abdullah Zikri selaku Chief Technology Officer
+ Afrillia Nur'Ajizah Azhar selaku Career Content Specialist, Fina Ida Matussilmi selaku Educational Content Specialist di kembangkan sebagai solusi digital
+            untuk membantu generasi muda menemukan arah karier
+            yang sesuai dengan potensi dirinya.
+        </p>
+    </div>
+    
+
+</div>
+<!-- MODAL PRIVASI -->
+
+<div id="privasiModal" class="modal">
+
+    <div class="modal-content">
+
+        <span class="close" onclick="tutupPrivasi()">
+            &times;
+        </span>
+
+        <h2>🔒 Privasi & Keamanan Data</h2>
+
+        <p>
+            PathFinder berkomitmen menjaga keamanan dan
+            kerahasiaan seluruh data pengguna.
+        </p>
+
+        <h3>📋 Tujuan Penggunaan Data</h3>
+
+        <p>
+            Data yang dimasukkan pengguna digunakan
+            untuk keperluan penelitian, pengembangan,
+            dan evaluasi sistem PathFinder guna meningkatkan
+            kualitas layanan pemetaan minat dan perencanaan karier.
+        </p>
+
+        <h3>🛡️ Kerahasiaan Data</h3>
+
+        <ul>
+            <li>Data pengguna tidak diperjualbelikan.</li>
+            <li>Informasi yang dikumpulkan hanya digunakan untuk keperluan penelitian dan pengembangan.</li>
+            <li>Identitas pengguna akan dijaga kerahasiaannya.</li>
+        </ul>
+
+        <h3>🎯 Penggunaan Hasil Tes</h3>
+
+        <p>
+            Hasil tes RIASEC yang ditampilkan bertujuan
+            sebagai rekomendasi dan bahan pertimbangan
+            dalam perencanaan pendidikan maupun karier.
+            Hasil tidak dimaksudkan sebagai keputusan mutlak.
+        </p>
+
+        <h3>✅ Persetujuan Pengguna</h3>
+
+        <p>
+            Dengan menggunakan platform PathFinder,
+            pengguna dianggap telah memahami dan menyetujui
+            kebijakan privasi serta penggunaan data sebagaimana
+            dijelaskan pada halaman ini.
+        </p>
+    </div>
+
+</div>
+<div id="survey1" class="modal">
+    <div class="modal-content">
+
+        <h2>🎨 Evaluasi Tampilan PathFinder</h2>
+
+        <p>
+            Kami akan melanjutkan hasil profil karier anda tapi kami mohon berikan penilaian terhadap tampilan dan visualisasi hasil screening.
+        </p>
+
+        <div class="survey-item">
+            <p>1. Tampilan PathFinder menarik dan nyaman dilihat.</p>
+            <select id="q1" class="input-box">
+                <option>Pilih Jawaban</option>
+                <option>1 - Sangat Tidak Setuju</option>
+                <option>2 - Tidak Setuju</option>
+                <option>3 - Netral</option>
+                <option>4 - Setuju</option>
+                <option>5 - Sangat Setuju</option>
+            </select>
+        </div>
+
+        <div class="survey-item">
+            <p>2. Visualisasi hasil screening mudah dipahami.</p>
+            <select id="q2" class="input-box">
+                <option>Pilih Jawaban</option>
+                <option>1 - Sangat Tidak Setuju</option>
+                <option>2 - Tidak Setuju</option>
+                <option>3 - Netral</option>
+                <option>4 - Setuju</option>
+                <option>5 - Sangat Setuju</option>
+            </select>
+        </div>
+
+        <div class="survey-item">
+            <p>3. Tata letak menu dan informasi mudah digunakan.</p>
+            <select id="q3" class="input-box">
+                <option>Pilih Jawaban</option>
+                <option>1 - Sangat Tidak Setuju</option>
+                <option>2 - Tidak Setuju</option>
+                <option>3 - Netral</option>
+                <option>4 - Setuju</option>
+                <option>5 - Sangat Setuju</option>
+            </select>
+        </div>
+
+        <button class="start-btn" onclick="kirimSurvey1()">
+            Lanjutkan
+        </button>
+
+    </div>
+</div>
+<div id="survey2" class="modal">
+    <div class="modal-content">
+
+        <h2>🚀 Evaluasi Manfaat PathFinder</h2>
+
+        <p>
+            Berikan penilaian terhadap manfaat PathFinder.
+        </p>
+
+        <div class="survey-item">
+            <p>4. Hasil screening membantu saya memahami potensi diri.</p>
+            <select id="q4" class="input-box">
+                <option>Pilih Jawaban</option>
+                <option>1 - Sangat Tidak Setuju</option>
+                <option>2 - Tidak Setuju</option>
+                <option>3 - Netral</option>
+                <option>4 - Setuju</option>
+                <option>5 - Sangat Setuju</option>
+            </select>
+        </div>
+
+        <div class="survey-item">
+            <p>5. Saya bersedia menggunakan PathFinder kembali.</p>
+            <select id="q5" class="input-box">
+                <option>Pilih Jawaban</option>
+                <option>1 - Sangat Tidak Setuju</option>
+                <option>2 - Tidak Setuju</option>
+                <option>3 - Netral</option>
+                <option>4 - Setuju</option>
+                <option>5 - Sangat Setuju</option>
+            </select>
+        </div>
+
+        <button class="start-btn" onclick="kirimSurvey2()">
+            Selesai
+        </button>
+
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
