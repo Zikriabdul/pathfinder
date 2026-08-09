@@ -72,24 +72,46 @@
 
         </div>
     </div>
+    
 
 </section>
     
 
     <section id="tesSection" class="tes-section" style="display:none;">
-        
-        <div class="hasil-container">
-            <h2>Pilihlah Jawaban sesuai kepribadian anda</h2>
-            <input
-                type="text"
-                id="nama"
-                placeholder="Masukkan Nama Lengkap"
-                class="input-box"
-            >
-            <div id="alertNama" class="alert-nama" style="display:none;">
-    ⚠️ Silakan masukkan nama lengkap terlebih dahulu.
-</div>
+    
+    <div class="hasil-container">
 
+        <h2>Pilihlah Jawaban sesuai kepribadian Anda</h2>
+
+        <!-- INPUT NAMA -->
+        <input
+            type="text"
+            id="nama"
+            placeholder="Masukkan Nama Lengkap"
+            class="input-box"
+        >
+
+        <!-- ALERT NAMA -->
+        <div
+            id="alertNama"
+            class="alert-nama"
+            style="display:none;"
+        >
+            ⚠️ <strong>Nama belum diisi.</strong><br>
+            Silakan masukkan nama terlebih dahulu untuk melihat hasil tes.
+        </div>
+<div
+    id="tombolHasilContainer"
+    style="display:none; text-align:center; margin-top:30px;"
+>
+    <button
+        type="button"
+        class="start-btn"
+        onclick="cekNamaSebelumHasil()"
+    >
+        🎯 Lihat Hasil Tes
+    </button>
+</div>
            <div class="question-card">
 
     <div class="progress-info">
@@ -151,7 +173,36 @@
         </label>
 
     </div>
-
+    <!-- TOMBOL LIHAT HASIL -->
+<!-- TOMBOL LIHAT HASIL -->
+<div
+    id="tombolHasilContainer"
+    style="display:none; text-align:center; margin-top:30px;"
+>
+    <button
+        type="button"
+        class="start-btn"
+        onclick="cekNamaSebelumHasil()"
+    >
+        Lihat Hasil Tes
+    </button>
+</div>
+<div
+    id="tombolHasilContainer"
+    style="
+        display:none;
+        text-align:center;
+        margin-top:30px;
+    "
+>
+    <button
+        type="button"
+        class="start-btn"
+        onclick="cekNamaSebelumHasil()"
+    >
+        🎯 Lihat Hasil Tes
+    </button>
+</div>
 </div>
             <button
         onclick="kembaliHome()"
