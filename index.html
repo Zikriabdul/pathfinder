@@ -32,18 +32,52 @@
     </nav>
 
     <section class="hero">
-        <h1>Temukan Arah Kariermu Mulai dari Dirimu Sendiri</h1>
-        <p>
-            Kenali minat dan kepribadianmu melalui tes berbasis RIASEC
-            untuk membantu menentukan pilihan karier yang lebih tepat.
-        </p>
-        <button class="start-btn" onclick="mulaiTes()">
-            Mulai
-        </button>
 
-    </section>
+    <h1>Temukan Arah Kariermu Mulai dari Dirimu Sendiri</h1>
+
+    <p>
+        Kenali minat, potensi, dan arah kariermu melalui asesmen
+        berbasis RIASEC yang dirancang untuk membantu kamu
+        menentukan langkah karier dengan lebih terarah.
+    </p>
+
+    <p class="hero-note">
+        Dari mengenali diri hingga menemukan langkah pengembangan karier.
+    </p>
+
+    <button
+        type="button"
+        class="start-btn"
+        onclick="mulaiTes()"
+    >
+        Mulai
+    </button>
+
+    <div class="hero-benefits">
+        <div class="benefits-track">
+
+            <span>🎯 Profil RIASEC</span>
+            <span>💡 Kekuatan Diri</span>
+            <span>📈 Area Pengembangan</span>
+            <span>💼 Rekomendasi Karier</span>
+            <span>🏢 Lingkungan Kerja Ideal</span>
+            <span>🚀 Dapatkan Sertifikasi, workshop, hingga magang</span>
+
+            <span>🎯 Profil RIASEC</span>
+            <span>💡 Kekuatan Diri</span>
+            <span>📈 Area Pengembangan</span>
+            <span>💼 Rekomendasi Karier</span>
+            <span>🏢 Lingkungan Kerja Ideal</span>
+            <span>🚀 Pengembangan Karier</span>
+
+        </div>
+    </div>
+
+</section>
+    
 
     <section id="tesSection" class="tes-section" style="display:none;">
+        
         <div class="hasil-container">
             <h2>Pilihlah Jawaban sesuai kepribadian anda</h2>
             <input
@@ -52,44 +86,73 @@
                 placeholder="Masukkan Nama Lengkap"
                 class="input-box"
             >
-            <div id="progress">
-                Soal <span id="nomorSoal">1</span> dari <span id="totalSoal">30</span>
-            </div>
+            <div id="alertNama" class="alert-nama" style="display:none;">
+    ⚠️ Silakan masukkan nama lengkap terlebih dahulu.
+</div>
 
-            <h3 id="pertanyaan">
-                Pertanyaan akan muncul di sini
-            </h3>
-            <select id="jawaban" class="input-box">
+           <div class="question-card">
 
-                <option value="" selected disabled>
-                    Pilih jawaban
-                </option>
+    <div class="progress-info">
+        <span>
+            Soal <span id="nomorSoal">1</span>
+            dari <span id="totalSoal">30</span>
+        </span>
+    </div>
 
-                <option value="1">
-                    Sangat Tidak Sesuai
-                </option>
+    <div class="progress-container">
+        <div id="progressBar" class="progress-bar"></div>
+    </div>
 
-                <option value="2">
-                    Tidak Sesuai
-                </option>
+    <h2 id="pertanyaan">
+        Saya senang memperbaiki peralatan,
+        barang, atau alat-alat yang rusak.
+    </h2>
 
-                <option value="3">
-                    Sesuai
-                </option>
+    <div class="pilihan-jawaban">
 
-                <option value="4">
-                    Sangat Sesuai
-                </option>
+        <label class="radio-option">
+            <input type="radio"
+                   name="jawabanRadio"
+                   value="1"
+                   onchange="pilihJawaban(1)">
+            <span>Sangat Tidak Setuju</span>
+        </label>
 
-            </select>
+        <label class="radio-option">
+            <input type="radio"
+                   name="jawabanRadio"
+                   value="2"
+                   onchange="pilihJawaban(2)">
+            <span>Tidak Setuju</span>
+        </label>
 
-            <button
-                id="btnNext"
-                onclick="kirimData()"
-                class="start-btn"
-            >
-                Tes Selanjutnya
-            </button>
+        <label class="radio-option">
+            <input type="radio"
+                   name="jawabanRadio"
+                   value="3"
+                   onchange="pilihJawaban(3)">
+            <span>Netral</span>
+        </label>
+
+        <label class="radio-option">
+            <input type="radio"
+                   name="jawabanRadio"
+                   value="4"
+                   onchange="pilihJawaban(4)">
+            <span>Setuju</span>
+        </label>
+
+        <label class="radio-option">
+            <input type="radio"
+                   name="jawabanRadio"
+                   value="5"
+                   onchange="pilihJawaban(5)">
+            <span>Sangat Setuju</span>
+        </label>
+
+    </div>
+
+</div>
             <button
         onclick="kembaliHome()"
         class="back-btn"
@@ -125,6 +188,24 @@
             mengambil keputusan karier secara lebih terarah
             berdasarkan data dan hasil asesmen minat.
         </p>
+            <h3>🛠️ Panduan Penggunaan</h3>
+
+    <ul>
+        <li>Klik tombol <b>Mulai</b>.</li>
+        <li>Masukkan nama pengguna.</li>
+        <li>Baca dan jawab setiap pernyataan sesuai kondisi diri.</li>
+        <li>Selesaikan seluruh pertanyaan hingga selesai.</li>
+        <li>Lihat hasil analisis minat karier.</li>
+        <li>Unduh hasil dalam bentuk PDF jika diperlukan.</li>
+    </ul>
+
+    <h3>📊 Cara Membaca Hasil</h3>
+
+    <p>
+        Hasil analisis menampilkan tipe dominan, Holland Code, kekuatan utama,
+        area pengembangan, lingkungan kerja ideal, dan rekomendasi karier.
+    </p>
+        
 
         <h3>🧠 Metode yang Digunakan</h3>
 
@@ -148,6 +229,7 @@
             <li>Memahami kekuatan dan area pengembangan diri</li>
             <li>Mendapat rekomendasi lingkungan kerja ideal</li>
             <li>Memperoleh rekomendasi profesi yang relevan</li>
+            <li>Mendapatkan rekomendasi pengembangan diri seperti sertifikasi, workshop dan magang</li>
         </ul>
 
         <h3>👨‍💻 Pengembang</h3>
