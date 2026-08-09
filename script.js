@@ -46,12 +46,44 @@ let namaPeserta = "";
 let surveyData = {};
 
 function mulaiTes() {
-  document.querySelector(".hero").style.display = "none";
-  document.getElementById("tesSection").style.display = "block";
-  document.getElementById("totalSoal").innerText = questions.length;
+    const hero = document.querySelector(".hero");
+    const tesSection = document.getElementById("tesSection");
 
-  tampilkanSoal();
+    if (!hero || !tesSection) {
+        console.error("Hero atau tesSection tidak ditemukan.");
+        return;
+    }
+
+    // Sembunyikan beranda
+    hero.style.display = "none";
+
+    // Tampilkan halaman tes
+    tesSection.style.display = "block";
+
+    // Reset tes
+    currentQuestion = 0;
+    answers = [];
+
+    // Jumlah soal
+    const totalSoal = document.getElementById("totalSoal");
+
+    if (totalSoal) {
+        totalSoal.innerText = questions.length;
+    }
+
+    // Tampilkan soal pertama
+    tampilkanSoal();
+
+    // Scroll ke halaman tes
+    tesSection.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+
+
+  return false;
 }
+
 function kembaliHome() {
   if (currentQuestion > 0) {
     currentQuestion--;
@@ -69,42 +101,46 @@ function kembaliHome() {
 }
 function tampilkanSoal() {
   document.getElementById("pertanyaan").innerText = questions[currentQuestion];
-  document.getElementById("nomorSoal").innerText = currentQuestion + 1;
-  const btn = document.getElementById("btnNext");
 
-  if (btn) {
-    if (currentQuestion === questions.length - 1) {
-      btn.innerText = "Lihat Hasil";
-    } else {
-      btn.innerText = "Tes Selanjutnya";
-    }
+  document.getElementById("nomorSoal").innerText = currentQuestion + 1;
+
+  const progress = ((currentQuestion + 1) / questions.length) * 100;
+
+  document.getElementById("progressBar").style.width = progress + "%";
+
+  document.querySelectorAll('input[name="jawabanRadio"]').forEach((radio) => {
+    radio.checked = false;
+  });
+
+  const icon = document.getElementById("kategoriIcon");
+
+  if (currentQuestion < 5) {
+    icon.innerText = "🔧";
+  } else if (currentQuestion < 10) {
+    icon.innerText = "🔬";
+  } else if (currentQuestion < 15) {
+    icon.innerText = "🎨";
+  } else if (currentQuestion < 20) {
+    icon.innerText = "🤝";
+  } else if (currentQuestion < 25) {
+    icon.innerText = "🚀";
+  } else {
+    icon.innerText = "📊";
   }
 }
+function pilihJawaban(nilai) {
+  answers[currentQuestion] = Number(nilai);
 
-function kirimData() {
-  const nama = document.getElementById("nama").value.trim();
-  const jawaban = document.getElementById("jawaban").value;
+  setTimeout(() => {
+    currentQuestion++;
 
-  if (nama === "") {
-    alert("Masukkan nama terlebih dahulu");
-    return;
-  }
-
-  if (jawaban === "") {
-    alert("Pilih jawaban terlebih dahulu");
-    return;
-  }
-
-  namaPeserta = nama;
-  answers.push(Number(jawaban));
-  currentQuestion++;
-
-  if (currentQuestion < questions.length) {
-    document.getElementById("jawaban").value = "";
-    tampilkanSoal();
-  } else {
-    selesaiTes();
-  }
+    if (currentQuestion < questions.length) {
+      tampilkanSoal();
+    } else {
+      // Semua soal selesai
+      cekNamaSebelumHasil();
+    }
+  }, 250);
 }
 
 function hitungRIASEC() {
@@ -116,27 +152,21 @@ function hitungRIASEC() {
     E: 0,
     C: 0,
   };
-
   for (let i = 0; i < 5; i++) {
     skor.R += answers[i];
   }
-
   for (let i = 5; i < 10; i++) {
     skor.I += answers[i];
   }
-
   for (let i = 10; i < 15; i++) {
     skor.A += answers[i];
   }
-
   for (let i = 15; i < 20; i++) {
     skor.S += answers[i];
   }
-
   for (let i = 20; i < 25; i++) {
     skor.E += answers[i];
   }
-
   for (let i = 25; i < 30; i++) {
     skor.C += answers[i];
   }
@@ -235,7 +265,47 @@ const tipeRIASEC = {
     ],
   },
 };
+function cekNamaSebelumHasil() {
+  const inputNama = document.getElementById("nama");
+  const alertNama = document.getElementById("alertNama");
 
+  if (!inputNama) {
+    console.error("Input nama tidak ditemukan.");
+    return;
+  }
+
+  namaPeserta = inputNama.value.trim();
+
+  // Jika nama kosong
+  if (namaPeserta === "") {
+    // Tampilkan alert di dalam halaman tes
+    if (alertNama) {
+      alertNama.style.display = "block";
+      alertNama.innerHTML = `
+                ⚠️ <strong>Nama belum diisi.</strong><br>
+                Silakan masukkan nama terlebih dahulu untuk melihat hasil tes.
+            `;
+    }
+
+    // Fokus ke input nama
+    inputNama.focus();
+
+    // Scroll ke input nama
+    inputNama.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
+
+    return;
+  }
+
+  // Nama sudah ada → lanjut ke hasil
+  if (alertNama) {
+    alertNama.style.display = "none";
+  }
+
+  selesaiTes();
+}
 async function selesaiTes() {
   const skor = hitungRIASEC();
   const ranking = Object.entries(skor).sort((a, b) => b[1] - a[1]);
@@ -311,7 +381,38 @@ async function selesaiTes() {
           )
           .join("")}
     </div>
+<h3 style="margin-top:35px">
+    🚀 Pengembangan Karier
+</h3>
 
+<div class="karier-grid">
+    ${pengembanganKarier[dominan]
+      .map(
+        (item) => `
+        <div class="karier-card">
+            <h3>${item.nama}</h3>
+            <p>${item.deskripsi}</p>
+
+            <a 
+                href="${item.link}" 
+                target="_blank"
+                rel="noopener noreferrer"
+                class="start-btn"
+                style="
+                    display:inline-block;
+                    text-decoration:none;
+                    margin-top:15px;
+                    padding:12px 20px;
+                    font-size:14px;
+                "
+            >
+                🔗 Kunjungi Platform
+            </a>
+        </div>
+        `
+      )
+      .join("")}
+</div>
     <p id="statusKirim" style="margin-top:30px">
          Semoga Membantu😁
     </p>
@@ -325,7 +426,7 @@ async function selesaiTes() {
 `;
   setTimeout(() => {
     document.getElementById("survey1").style.display = "flex";
-  }, 20000);
+  }, 5000);
 
   hasilLengkap = {
     nama: namaPeserta,
@@ -386,6 +487,93 @@ const lingkunganKerja = {
   S: "Lingkungan kerja pendidikan, pelayanan, konseling, kesehatan, dan pengembangan sumber daya manusia.",
   E: "Lingkungan kerja bisnis, organisasi, pemasaran, kepemimpinan, negosiasi, dan pengambilan keputusan strategis.",
   C: "Lingkungan kerja administratif, keuangan, perkantoran, dokumentasi, dan pengelolaan data yang terstruktur.",
+};
+const pengembanganKarier = {
+  R: [
+    {
+      nama: "Google Career Certificates",
+      deskripsi:
+        "Kembangkan keterampilan digital dan profesional yang relevan dengan dunia kerja.",
+      link: "https://grow.google/certificates/",
+    },
+    {
+      nama: "Cisco Networking Academy",
+      deskripsi: "Pelajari networking, cybersecurity, dan teknologi jaringan.",
+      link: "https://www.netacad.com/",
+    },
+  ],
+
+  I: [
+    {
+      nama: "Google Data Analytics",
+      deskripsi:
+        "Kembangkan keterampilan analisis data untuk mendukung karier di bidang data.",
+      link: "https://grow.google/certificates/",
+    },
+    {
+      nama: "IBM SkillsBuild",
+      deskripsi: "Pelajari data, AI, teknologi, dan keterampilan profesional.",
+      link: "https://skillsbuild.org/",
+    },
+  ],
+
+  A: [
+    {
+      nama: "Google UX Design",
+      deskripsi:
+        "Kembangkan keterampilan desain pengalaman pengguna dan UX research.",
+      link: "https://grow.google/certificates/",
+    },
+    {
+      nama: "Adobe Education Exchange",
+      deskripsi:
+        "Eksplorasi materi dan pengembangan keterampilan kreatif digital.",
+      link: "https://edex.adobe.com/",
+    },
+  ],
+
+  S: [
+    {
+      nama: "Coursera",
+      deskripsi:
+        "Eksplorasi program pengembangan keterampilan komunikasi, pendidikan, dan sosial.",
+      link: "https://www.coursera.org/",
+    },
+    {
+      nama: "Google Career Certificates",
+      deskripsi:
+        "Kembangkan keterampilan profesional dan komunikasi untuk dunia kerja.",
+      link: "https://grow.google/certificates/",
+    },
+  ],
+
+  E: [
+    {
+      nama: "Google Digital Garage",
+      deskripsi: "Kembangkan keterampilan digital marketing dan bisnis.",
+      link: "https://grow.google/",
+    },
+    {
+      nama: "HubSpot Academy",
+      deskripsi: "Pelajari marketing, sales, dan business development.",
+      link: "https://academy.hubspot.com/",
+    },
+  ],
+
+  C: [
+    {
+      nama: "Microsoft Learn",
+      deskripsi:
+        "Kembangkan keterampilan Microsoft, data, administrasi, dan teknologi.",
+      link: "https://learn.microsoft.com/training/",
+    },
+    {
+      nama: "Google Career Certificates",
+      deskripsi:
+        "Tingkatkan keterampilan digital dan profesional untuk dunia kerja.",
+      link: "https://grow.google/certificates/",
+    },
+  ],
 };
 function bukaTentang() {
   document.getElementById("tentangModal").style.display = "flex";
@@ -459,28 +647,98 @@ const tanggalTes = new Date().toLocaleDateString("id-ID", {
 async function downloadPDF() {
   const element = document.getElementById("hasilPDF");
 
+  if (!element) {
+    alert("Data hasil belum tersedia.");
+    return;
+  }
+
+  const originalStyle = element.getAttribute("style");
+  element.style.width = "190mm";
+  element.style.maxWidth = "190mm";
+  element.style.margin = "0 auto";
+  element.style.background = "#ffffff";
+  element.style.padding = "0";
+
+  const downloadButton = document.querySelector("#hasilPDF + .btn-group");
+
+  if (downloadButton) {
+    downloadButton.style.display = "none";
+  }
+
   const canvas = await html2canvas(element, {
-    scale: 2,
+    scale: 1.5,
     useCORS: true,
+    backgroundColor: "#ffffff",
+    logging: false,
   });
 
-  const imgData = canvas.toDataURL("image/png");
   const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF("p", "mm", "a4");
+
+  const pdf = new jsPDF({
+    orientation: "portrait",
+    unit: "mm",
+    format: "a4",
+  });
+
   const pageWidth = 210;
   const pageHeight = 297;
-  const imgWidth = pageWidth;
-  const imgHeight = (canvas.height * imgWidth) / canvas.width;
-  let heightLeft = imgHeight;
-  let position = 0;
-  pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-  heightLeft -= pageHeight;
 
-  while (heightLeft > 0) {
-    position = heightLeft - imgHeight;
-    pdf.addPage();
-    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-    heightLeft -= pageHeight;
+  const margin = 10;
+
+  const pdfWidth = pageWidth - margin * 2;
+  const pdfHeight = pageHeight - margin * 2;
+
+  const ratio = canvas.height / canvas.width;
+  const fullImageHeight = pdfWidth * ratio;
+  const imgData = canvas.toDataURL("image/jpeg", 0.9);
+  const maxPages = 3;
+  const pageContentHeight = pdfHeight;
+  let remainingHeight = fullImageHeight;
+  let currentPage = 0;
+  while (remainingHeight > 0 && currentPage < maxPages) {
+    if (currentPage > 0) {
+      pdf.addPage();
+    }
+
+    const positionY = margin - currentPage * pageContentHeight;
+
+    pdf.addImage(imgData, "JPEG", margin, positionY, pdfWidth, fullImageHeight);
+
+    remainingHeight -= pageContentHeight;
+
+    currentPage++;
   }
-  pdf.save(`PathFinder_${namaPeserta}.pdf`);
+
+  for (let page = 1; page <= currentPage; page++) {
+    pdf.setPage(page);
+
+    pdf.setFont("helvetica", "normal");
+    pdf.setFontSize(8);
+
+    pdf.setTextColor(120, 120, 120);
+
+    pdf.text(`PathFinder • Hasil Analisis Karier`, pageWidth / 2, 290, {
+      align: "center",
+    });
+
+    pdf.text(`${page} / ${currentPage}`, pageWidth - margin, 290, {
+      align: "right",
+    });
+  }
+
+  if (originalStyle !== null) {
+    element.setAttribute("style", originalStyle);
+  } else {
+    element.removeAttribute("style");
+  }
+
+  if (downloadButton) {
+    downloadButton.style.display = "";
+  }
+  const namaFile =
+    typeof namaPeserta !== "undefined" && namaPeserta
+      ? namaPeserta.replace(/\s+/g, "_")
+      : "Peserta";
+
+  pdf.save(`PathFinder_Hasil_${namaFile}.pdf`);
 }
