@@ -46,44 +46,64 @@ let namaPeserta = "";
 let surveyData = {};
 
 function mulaiTes() {
-    const hero = document.querySelector(".hero");
-    const tesSection = document.getElementById("tesSection");
+  const hero = document.querySelector(".hero");
+  const tesSection = document.getElementById("tesSection");
 
-    if (!hero || !tesSection) {
-        console.error("Hero atau tesSection tidak ditemukan.");
-        return;
-    }
+  if (!hero || !tesSection) {
+    console.error("Hero atau tesSection tidak ditemukan.");
+    return;
+  }
 
-    // Sembunyikan beranda
-    hero.style.display = "none";
+  // Sembunyikan beranda
+  hero.style.display = "none";
 
-    // Tampilkan halaman tes
-    tesSection.style.display = "block";
+  // Tampilkan halaman tes
+  tesSection.style.display = "block";
 
-    // Reset tes
-    currentQuestion = 0;
-    answers = [];
+  // Reset tes
+  currentQuestion = 0;
+  answers = [];
+  namaPeserta = "";
 
-    // Jumlah soal
-    const totalSoal = document.getElementById("totalSoal");
+  // Reset input nama
+  const inputNama = document.getElementById("nama");
 
-    if (totalSoal) {
-        totalSoal.innerText = questions.length;
-    }
+  if (inputNama) {
+    inputNama.value = "";
+  }
 
-    // Tampilkan soal pertama
-    tampilkanSoal();
+  // Sembunyikan alert
+  const alertNama = document.getElementById("alertNama");
 
-    // Scroll ke halaman tes
-    tesSection.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-    });
+  if (alertNama) {
+    alertNama.style.display = "none";
+  }
 
+  // Sembunyikan tombol hasil
+  const tombolHasil = document.getElementById("tombolHasilContainer");
+
+  if (tombolHasil) {
+    tombolHasil.style.display = "none";
+  }
+
+  // Jumlah soal
+  const totalSoal = document.getElementById("totalSoal");
+
+  if (totalSoal) {
+    totalSoal.innerText = questions.length;
+  }
+
+  // Tampilkan soal pertama
+  tampilkanSoal();
+
+  // Scroll ke halaman tes
+  tesSection.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
 
   return false;
 }
-
 function kembaliHome() {
   if (currentQuestion > 0) {
     currentQuestion--;
@@ -138,7 +158,19 @@ function pilihJawaban(nilai) {
       tampilkanSoal();
     } else {
       // Semua soal selesai
-      cekNamaSebelumHasil();
+      // Jangan langsung tampilkan hasil
+      // Tampilkan tombol "Lihat Hasil Tes"
+
+      const tombolHasil = document.getElementById("tombolHasilContainer");
+
+      if (tombolHasil) {
+        tombolHasil.style.display = "block";
+
+        tombolHasil.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      }
     }
   }, 250);
 }
@@ -268,19 +300,25 @@ const tipeRIASEC = {
 function cekNamaSebelumHasil() {
   const inputNama = document.getElementById("nama");
   const alertNama = document.getElementById("alertNama");
+  const tombolHasil = document.getElementById("tombolHasilContainer");
 
+  // Pastikan input nama tersedia
   if (!inputNama) {
     console.error("Input nama tidak ditemukan.");
     return;
   }
 
+  // Ambil nama
   namaPeserta = inputNama.value.trim();
 
-  // Jika nama kosong
+  // =========================================
+  // JIKA NAMA KOSONG
+  // =========================================
+
   if (namaPeserta === "") {
-    // Tampilkan alert di dalam halaman tes
     if (alertNama) {
       alertNama.style.display = "block";
+
       alertNama.innerHTML = `
                 ⚠️ <strong>Nama belum diisi.</strong><br>
                 Silakan masukkan nama terlebih dahulu untuk melihat hasil tes.
@@ -299,11 +337,20 @@ function cekNamaSebelumHasil() {
     return;
   }
 
-  // Nama sudah ada → lanjut ke hasil
+  // =========================================
+  // JIKA NAMA SUDAH DIISI
+  // =========================================
+
   if (alertNama) {
     alertNama.style.display = "none";
   }
 
+  // Sembunyikan tombol
+  if (tombolHasil) {
+    tombolHasil.style.display = "none";
+  }
+
+  // Tampilkan hasil
   selesaiTes();
 }
 async function selesaiTes() {
