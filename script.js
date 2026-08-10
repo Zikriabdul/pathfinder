@@ -176,6 +176,13 @@ function pilihJawaban(nilai) {
 }
 
 function hitungRIASEC() {
+  // Pastikan semua 30 jawaban sudah ada
+  if (answers.length !== 30) {
+    console.error("Jumlah jawaban tidak lengkap:", answers);
+    alert("Jawaban belum lengkap. Silakan selesaikan semua soal.");
+    return null;
+  }
+
   const skor = {
     R: 0,
     I: 0,
@@ -184,24 +191,39 @@ function hitungRIASEC() {
     E: 0,
     C: 0,
   };
+
+  // R = soal 1-5
   for (let i = 0; i < 5; i++) {
-    skor.R += answers[i];
+    skor.R += Number(answers[i]) || 0;
   }
+
+  // I = soal 6-10
   for (let i = 5; i < 10; i++) {
-    skor.I += answers[i];
+    skor.I += Number(answers[i]) || 0;
   }
+
+  // A = soal 11-15
   for (let i = 10; i < 15; i++) {
-    skor.A += answers[i];
+    skor.A += Number(answers[i]) || 0;
   }
+
+  // S = soal 16-20
   for (let i = 15; i < 20; i++) {
-    skor.S += answers[i];
+    skor.S += Number(answers[i]) || 0;
   }
+
+  // E = soal 21-25
   for (let i = 20; i < 25; i++) {
-    skor.E += answers[i];
+    skor.E += Number(answers[i]) || 0;
   }
+
+  // C = soal 26-30
   for (let i = 25; i < 30; i++) {
-    skor.C += answers[i];
+    skor.C += Number(answers[i]) || 0;
   }
+
+  console.log("Jawaban:", answers);
+  console.log("Skor RIASEC:", skor);
 
   return skor;
 }
@@ -355,10 +377,28 @@ function cekNamaSebelumHasil() {
 }
 async function selesaiTes() {
   const skor = hitungRIASEC();
+
+  if (!skor) {
+    return;
+  }
+
+  // Buat ranking berdasarkan skor tertinggi
   const ranking = Object.entries(skor).sort((a, b) => b[1] - a[1]);
-  const hollandCode = ranking[0][0] + ranking[1][0] + ranking[2][0];
+
+  console.log("Ranking RIASEC:", ranking);
+
   const dominan = ranking[0][0];
+
+  const hollandCode = ranking[0][0] + ranking[1][0] + ranking[2][0];
+
   const profil = tipeRIASEC[dominan];
+
+  console.log("Dominan:", dominan);
+  console.log("Holland Code:", hollandCode);
+  console.log("Profil:", profil);
+
+  hasilHolland = hollandCode;
+  tipeDominan = profil.nama;
   hasilHolland = hollandCode;
   tipeDominan = profil.nama;
   const persenR = Math.round((skor.R / 20) * 100);
