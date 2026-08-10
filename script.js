@@ -513,7 +513,7 @@ async function selesaiTes() {
 `;
   setTimeout(() => {
     document.getElementById("survey1").style.display = "flex";
-  }, 1300);
+  }, 1800);
 
   hasilLengkap = {
     nama: namaPeserta,
